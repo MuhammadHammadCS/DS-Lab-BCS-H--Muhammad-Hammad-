@@ -1,23 +1,34 @@
 #include "iostream"
 using namespace std;
 
-void shellSort(int arr[], int size)
+void combSort(int arr[], int size)
 {
-    for (int gap = size/2; gap > 0; gap /= 2)
-    {
-        for (int i = gap; i < size; i++)
-        {
-            int temp = arr[i];
-            int res = i;
+    int count = 0;
+    float shrink = 1.3;
+    int gap = size;
+    bool swapped = true;
 
-            while(res >= gap && arr[res - gap] > temp)
+    while(gap > 1 || swapped == true)
+    {
+        gap = (int)(gap/shrink);
+        if(gap < 1)
+        {
+            gap = 1;
+        }
+        swapped = false;
+        for (int i = 0; i + gap < size; i++)
+        {
+            if(arr[i] > arr[gap + i])
             {
-                arr[res] = arr[res - gap];
-                res -= gap;
+                int temp = arr[i];
+                arr[i] = arr[i + gap];
+                arr[i + gap] = temp;
+                swapped = true;
+                count++;
             }
-            arr[res] = temp;
-        }   
+        } 
     }
+    cout << "\nComplexity Analysis:\nnumber of comparisons and swapped: " << count << endl;
 }
 
 void display(int arr[], int n)
@@ -44,7 +55,7 @@ int main()
     cout << endl;
     cout << "Unsorted Array\n";
     display(arr, n);
-    shellSort(arr, n);
+    combSort(arr, n);
     cout << "\nSorted Array\n";
     display(arr, n);
     delete[] arr;
